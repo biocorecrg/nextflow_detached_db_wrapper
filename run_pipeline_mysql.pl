@@ -113,8 +113,13 @@ my $cfg = new Config::Simple($tmpconf);
 my %config = $cfg->vars();
 print Dumper( \%config );
 
+# Fix variations
+if ( $config{"dbEngine"} && ! $config{"dbengine"} ) {
+  $config{"dbengine"} = $config{"dbEngine"};
+}
+
 # If MySQL mode
-if ( lc( $config{"dbEngine"} ) eq 'mysql' ) {
+if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
 
     # Check all MySQL params are there
     if ( ! $config{"mysqlimg"} || ! -f $config{"mysqlimg"} ) {
@@ -193,7 +198,8 @@ if ( lc( $config{"dbEngine"} ) eq 'mysql' ) {
 
     # Else, SQLite mode
     # Run Nextflow pipeline
-    print( "Run NEXTFLOW\n") ;
+    print( "NO DB ENGINE launched!\n");
+    print( "Run NEXTFLOW\n");
     system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr --config $confFile" );
 
 }
