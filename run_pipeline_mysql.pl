@@ -34,16 +34,16 @@ $random .= @rchars[rand @rchars] for 1..8;
 my $extra = "-j y -l virtual_free=4G,h_rt=372800 -N MYSQL_container -m be -cwd -V -q long-sl7";
 
 GetOptions(
-    "conf=s"=>\$confFile,
     "help|h" => \$show_help,
+    "conf=s"=> \$confFile,
+    "engine=s" => \$engine,
+    "extra=s" => \$extra,    
+    "mysqlonly|m" => \$mysqlonly,
     "nextflow=s" => \$nextflow,
     "nextflowver=s" => \$nextflowver,
-    "script=s" => \$nfscript,
     "params=s" => \$nfparams,
-    "extra=s" => \$extra,
     "resume|r" => \$resume,
-    "mysqlonly|m" => \$mysqlonly,
-    "engine=s" => \$engine
+    "script=s" => \$nfscript
 );
 
 my $resumeStr = "";
@@ -58,13 +58,14 @@ if( !defined $confFile || $show_help ) {
    Options
          -h || help 		 : This message
          -conf    		 : Configuration file; by default 'main_configuration.ini' in the current folder
+         -engine           : Engine to be used (so far 'sge' by default, otherwise local)
+         -extra            : Extra parameters to be passed to the cluster queue
+         -mysqlonly        : Lauch only MySQL server (as far as running in MySQL mode)
          -nextflow         : Nextflow path
          -nextflowver      : Specific Nextflow version (e. g., 21.04.3)
          -params           : Parameters for Nextflow program
-         -extra            : Extra parameters to be passed to the cluster queue
          -resume           : Resume the pipeline (it passes -resume argument to nextflow)
-         -mysqlonly        : Lauch only MySQL server (as far as running in MySQL mode)
-         -engine           : Engine to be used (so far 'sge' by default, otherwise local)
+         -script           : Nextflow script to be run (by default main.nf)
   \n/);
 }
 
