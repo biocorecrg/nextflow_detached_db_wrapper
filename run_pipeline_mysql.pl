@@ -58,6 +58,7 @@ if( !defined $confFile || $show_help ) {
          -h || help 		 : This message
          -conf    		 : Configuration file; by default 'main_configuration.ini' in the current folder
          -nextflow         : Nextflow path
+         -nextflowver      : Specific Nextflow version (e. g., 21.04.3)
          -params           : Parameters for Nextflow program
          -extra            : Extra parameters to be passed to the cluster queue
          -resume           : Resume the pipeline (it passes -resume argument to nextflow)
