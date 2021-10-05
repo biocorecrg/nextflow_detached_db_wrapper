@@ -38,6 +38,7 @@ GetOptions(
     "help|h" => \$show_help,
     "nextflow=s" => \$nextflow,
     "nextflowver=s" => \$nextflowver,
+    "script=s" => $nfscript,
     "params=s" => \$nfparams,
     "extra=s" => \$extra,
     "resume|r" => \$resume,
