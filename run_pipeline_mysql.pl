@@ -14,7 +14,7 @@ use Cwd qw(cwd);
 my ($confFile,$show_help);
 my $nextflow = "nextflow";
 # Tested NF version
-my $nextflowver = "20.10.0";
+my $nextflowver = "21.04.3";
 my $nfscript = "main.nf";
 my $nfparams = ""; # By default no additional params
 
