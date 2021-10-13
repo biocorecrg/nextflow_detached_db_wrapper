@@ -14,7 +14,7 @@ use Cwd qw(cwd);
 my ($confFile,$show_help);
 my $nextflow = "nextflow";
 # Tested NF version
-my $nextflowver = "21.04.3";
+my $nextflowver = "21.09.0-edge";
 my $nfscript = "main.nf";
 my $nfparams = ""; # By default no additional params
 
@@ -37,7 +37,7 @@ GetOptions(
     "help|h" => \$show_help,
     "conf=s"=> \$confFile,
     "engine=s" => \$engine,
-    "extra=s" => \$extra,    
+    "extra=s" => \$extra,
     "mysqlonly|m" => \$mysqlonly,
     "nextflow=s" => \$nextflow,
     "nextflowver=s" => \$nextflowver,

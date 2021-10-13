@@ -56,10 +56,48 @@ if ( mysql ) {
  }
 }
 
+sql {
+    db {
+        'dbtest' {
+              url = "jdbc:mysql://${dbhost}:${params.dbport}/${params.dbname}"
+              user = params.dbuser
+              password = params.dbpass
+            }
+    }
+}
+
+process importSchema {
+
+  output:
+  path("done")
+
+  """
+  mysql -u${params.dbuser} -p${params.dbpass} -h${params.dbhost} -P${params.dbport} \
+  ${params.dbname} -e "CREATE DATABASE ${params.dbname}; CREATE TABLE test (id varchar(20)); INSERT INTO test values('myid')" > done
+  """
+
+}
+
+process insertAndRetrieve {
+
+  input:
+  path(done)
+
+  output:
+  val(out)
+
+  script:
+  query = "SELECT id from test limit 1"
+  out = channel.sql.fromQuery(query, db: 'dbtest')
+
+}
+
 // Full Workflow
 workflow {
 
-  // TODO: Fill an example process here using MySQL
+  done = importSchema()
+  out = insertAndRetrieve(done)
+  println(out)
 }
 
 // On finishing
