@@ -181,7 +181,7 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
             my $myip=`cat "$mysqllog/DBHOST"`;
             print "DBHOST: ".$myip."\n";
            	print( "Run NEXTFLOW\n") ;
-            system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr --config $confFile" );
+            system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr -c $confFile" );
         } else {
 
             while ( ! -f "$mysqllog/DBHOST" ) {
@@ -203,6 +203,6 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
     # Run Nextflow pipeline
     print( "NO DB ENGINE launched!\n");
     print( "Run NEXTFLOW\n");
-    system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr --config $confFile" );
+    system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr -c $confFile" );
 
 }
