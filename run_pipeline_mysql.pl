@@ -69,6 +69,35 @@ if( !defined $confFile || $show_help ) {
   \n/);
 }
 
+sub processConfFileDb {
+  my $confFile = shift;
+  my $myip = shift;
+  my $tmpconf = shift;
+
+  my $str = "";
+
+  open( CONF, $confFile );
+
+  while ( <CONF> ) {
+
+    if ( $_=~/\bdbhost/ ) {
+
+      $_ = "dbhost = ".$myip;
+    }
+
+    $str = $_."\n";
+
+  }
+
+  open( TMPCONF, ">$tmpconf" );
+
+  print TMPCONF $str;
+
+  close( TMPCONF );
+
+}
+
+
 my $tmpconf = tmpnam();
 
 my $pwd = cwd;
@@ -180,8 +209,11 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
 
             my $myip=`cat "$mysqllog/DBHOST"`;
             print "DBHOST: ".$myip."\n";
+            my $tmpconf = tmpnam();
+
+            &processConfFileDb( $confFile, $myip, $tmpconf );
            	print( "Run NEXTFLOW\n") ;
-            system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr -c $confFile" );
+            system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr -c $tmpconf" );
         } else {
 
             while ( ! -f "$mysqllog/DBHOST" ) {

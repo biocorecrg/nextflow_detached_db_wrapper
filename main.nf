@@ -24,7 +24,7 @@ nextflow.enable.dsl=2
 
 params.help            = false
 params.resume          = false
-
+params.dbhost          = "127.0.0.1"
 
 log.info """
 Nextflow Example Database Wrapper ~  version ${version}
@@ -43,27 +43,6 @@ if (params.resume) exit 1, "Are you making the classical --resume typo? Be caref
 boolean mysql = false
 if(params.dbengine == "mysql") {
 	mysql = true
-}
-
-dbhost = null
-
-// Getting contents of file
-if ( mysql ) {
- dbhost = "127.0.0.1" // Default value
-
- if ( new File(  params.mysqllog+"/DBHOST" ).exists() ) {
-  dbhost = new File(  params.mysqllog+"/DBHOST" ).text.trim()
- }
-}
-
-sql {
-    db {
-        'dbtest' {
-              url = "jdbc:mysql://${dbhost}:${params.dbport}/${params.dbname}"
-              user = params.dbuser
-              password = params.dbpass
-            }
-    }
 }
 
 process importSchema {
