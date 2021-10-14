@@ -82,7 +82,7 @@ sub processConfFileDb {
 
     if ( $_=~/dbhost/ ) {
 
-      $_ = "dbhost = \"".$myip."\"";
+      $_ = " dbhost = \"".$myip."\"";
     }
 
     $str = $str.$_."\n";
@@ -208,6 +208,7 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
             }
 
             my $myip=`cat "$mysqllog/DBHOST"`;
+            $myip=~s/\s+//g;
             print "DBHOST: ".$myip."\n";
             my $tmpconf = tmpnam();
 
