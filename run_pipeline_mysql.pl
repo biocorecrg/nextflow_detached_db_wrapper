@@ -80,7 +80,7 @@ sub processConfFileDb {
 
   while ( <CONF> ) {
 
-    if ( $_=~/\bdbhost/ ) {
+    if ( $_=~/dbhost/ ) {
 
       $_ = "dbhost = \"".$myip."\"";
     }
