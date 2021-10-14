@@ -85,7 +85,7 @@ sub processConfFileDb {
       $_ = "dbhost = \"".$myip."\"";
     }
 
-    $str = $_."\n";
+    $str = $str.$_."\n";
 
   }
 
