@@ -82,7 +82,7 @@ sub processConfFileDb {
 
     if ( $_=~/\bdbhost/ ) {
 
-      $_ = "dbhost = ".$myip;
+      $_ = "dbhost = \"".$myip."\"";
     }
 
     $str = $_."\n";
