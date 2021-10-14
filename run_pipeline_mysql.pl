@@ -126,7 +126,7 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
 
     # Check all MySQL params are there
     if ( ! $config{"mysqlimg"} || ! -f $config{"mysqlimg"} ) {
-      $config{"mysqlimg"} = "docker://library/mariadb";
+      $config{"mysqlimg"} = "https://biocore.crg.eu/singularity/mariadb-10.3.sif";
     }
 
     if ( $config{"dbuser"} && $config{"dbpass"} && $config{"dbport"} && $config{"mysqlimg"} ) {
