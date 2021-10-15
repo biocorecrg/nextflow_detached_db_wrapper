@@ -13,6 +13,7 @@ MYSQLUSR=$6
 MYSQLPWD=$7
 MYSQLPORT=$8
 RSTRING=$9
+MYSQLDB=${10}
 
 # Create instance random name for avoiding clashes
 INSTANCE=mysql_${RSTRING}
@@ -36,6 +37,11 @@ sleep 15
 
 singularity exec instance://$INSTANCE mysql -uroot -h127.0.0.1 -P$MYSQLPORT -e "GRANT ALL PRIVILEGES on *.* TO '$MYSQLUSR'@'%' identified by '$MYSQLPWD' ;"
 
+if [ ! -z "$MYSQLDB" ]
+then
+	singularity exec instance://$INSTANCE mysql -uroot -h127.0.0.1 -P$MYSQLPORT -e "CREATE DATABASE $MYSQLDB ;"
+fi
+
 # Create $PROCESSFILE here
 date > $PROCESSFILE
 
@@ -50,4 +56,3 @@ done;
 
 singularity instance stop $INSTANCE
 exit 0
-

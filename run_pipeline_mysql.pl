@@ -20,6 +20,7 @@ my $nfparams = ""; # By default no additional params
 
 my $resume = 0;
 my $mysqlonly = 0;
+my $createDb = 0;
 my $engine = "sge";
 
 my $mysqldata = $ENV{'HOME'}."/mysqldata";
@@ -35,6 +36,7 @@ my $extra = "-j y -l virtual_free=4G,h_rt=372800 -N MYSQL_container -m be -cwd -
 
 GetOptions(
     "help|h" => \$show_help,
+    "createdb|c" => \$createDb,
     "conf=s"=> \$confFile,
     "engine=s" => \$engine,
     "extra=s" => \$extra,
@@ -57,7 +59,8 @@ if( !defined $confFile || $show_help ) {
    Usage:   run_pipeline_mysql.pl [options]
    Options
          -h || help 		 : This message
-         -conf    		 : Configuration file; by default 'main_configuration.ini' in the current folder
+         -conf    		     : Configuration file; by default 'main_configuration.ini' in the current folder
+         -createdb         : Whether a database is created in the process
          -engine           : Engine to be used (so far 'sge' by default, otherwise local)
          -extra            : Extra parameters to be passed to the cluster queue
          -mysqlonly        : Lauch only MySQL server (as far as running in MySQL mode)
@@ -194,7 +197,12 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
         }
 
         # Run MySQL qsub process. TODO: Allow more flexibility here
-        system( "$extra run.mysql.qsub.sh ".$config{"mysqlimg"}." $mysqldata $mysqllog/CNF $mysqllog/DBHOST $mysqllog/PROCESS ".$config{"dbuser"}." ".$config{"dbpass"}." ".$config{"dbport"}. " ". $random ." & " );
+        $dbname = "";
+        if ( $config{"dbname"}  && $createDb ) {
+          $dbname = $config{"dbname"};
+        }
+
+        system( "$extra run.mysql.qsub.sh ".$config{"mysqlimg"}." $mysqldata $mysqllog/CNF $mysqllog/DBHOST $mysqllog/PROCESS ".$config{"dbuser"}." ".$config{"dbpass"}." ".$config{"dbport"}. " ". $random ." $dbname & " );
 
         # Run nextflow
         # TODO: To reconsider way of checking
@@ -217,7 +225,7 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
             &processConfFileDb( $confFile, $myip, $tmpconf );
             print( "Run NEXTFLOW\n") ;
             system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr --config $tmpconf" );
-            
+
         } else {
 
             while ( ! -f "$mysqllog/DBHOST" ) {

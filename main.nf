@@ -48,15 +48,12 @@ if(params.dbengine == "mysql") {
 // Full Workflow
 workflow {
 
-  query_select = "SELECT id, len FROM test"
-
-  channel
+  out = channel
     .of('Hello','world')
-    .map( it -> tuple(it, it.length) )
-    .sqlInsert( into: 'test', columns: 'id, len', db: 'dbtest',
-    setup: 'CREATE TABLE test (id varchar(20), len int(4))' )
-    .fromQuery(query_select, db: 'dbtest')
-    .view()
+    .map( it -> tuple(it) )
+    .sqlInsert( into: 'test', columns: 'id', db: 'dbtest',
+    setup: 'CREATE TABLE test (id varchar(20))' )
+
 
 }
 
@@ -69,6 +66,9 @@ workflow.onComplete {
    def procfile = new File( params.mysqllog+"/PROCESS" )
    procfile.delete()
  }
+
+ query_select = "SELECT id FROM test"
+ channel.sql.fromQuery(query_select, db: 'dbtest').view()
 
 }
 
