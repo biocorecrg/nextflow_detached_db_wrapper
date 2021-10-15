@@ -55,6 +55,9 @@ workflow {
     setup: 'CREATE TABLE test (id varchar(20))' )
 
 
+   // query_select = "SELECT id FROM test"
+   // channel.sql.fromQuery(query_select, db: 'dbtest').view()
+
 }
 
 // On finishing
@@ -66,9 +69,6 @@ workflow.onComplete {
    def procfile = new File( params.mysqllog+"/PROCESS" )
    procfile.delete()
  }
-
- query_select = "SELECT id FROM test"
- channel.sql.fromQuery(query_select, db: 'dbtest').view()
 
 }
 
