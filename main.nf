@@ -52,7 +52,7 @@ process importSchema {
 
   """
   mysql -u${params.dbuser} -p${params.dbpass} -h${params.dbhost} -P${params.dbport} \
-  ${params.dbname} -e "CREATE DATABASE ${params.dbname}; CREATE TABLE test (id varchar(20)); INSERT INTO test values('myid')" > done
+  ${params.dbname} -e "CREATE TABLE test (id varchar(20)); INSERT INTO test values('myid')" > done
   """
 
 }
