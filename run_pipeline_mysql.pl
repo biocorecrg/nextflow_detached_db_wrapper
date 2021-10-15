@@ -216,7 +216,7 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
 
             &processConfFileDb( $confFile, $myip, $tmpconf );
             print( "Run NEXTFLOW\n") ;
-            system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr -c $tmpconf" );
+            system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr --config $tmpconf" );
             
         } else {
 
@@ -239,6 +239,6 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
     # Run Nextflow pipeline
     print( "NO DB ENGINE launched!\n");
     print( "Run NEXTFLOW\n");
-    system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr -c $confFile" );
+    system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr --config $confFile" );
 
 }
