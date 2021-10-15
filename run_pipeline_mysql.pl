@@ -197,7 +197,7 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
         }
 
         # Run MySQL qsub process. TODO: Allow more flexibility here
-        $dbname = "";
+        my $dbname = "";
         if ( $config{"dbname"}  && $createDb ) {
           $dbname = $config{"dbname"};
         }

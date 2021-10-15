@@ -13,7 +13,7 @@ MYSQLUSR=$6
 MYSQLPWD=$7
 MYSQLPORT=$8
 RSTRING=$9
-MYSQLDB=${10}
+MYSQLDB=${10:-}
 
 # Create instance random name for avoiding clashes
 INSTANCE=mysql_${RSTRING}
@@ -33,7 +33,7 @@ hostname -I | perl -lne 'if ( $_=~/^(\S+)\s/ ) { $_=~/^(\S+)\s/ ; print $1; }' >
 
 singularity instance start -B $MYSQLDIR/db:/var/lib/mysql -B $MYSQLCNF:/etc/mysql/conf.d/custom.cnf -B $MYSQLDIR/socket:/run/mysqld $MYSQLIMG $INSTANCE
 
-sleep 15
+sleep 60
 
 singularity exec instance://$INSTANCE mysql -uroot -h127.0.0.1 -P$MYSQLPORT -e "GRANT ALL PRIVILEGES on *.* TO '$MYSQLUSR'@'%' identified by '$MYSQLPWD' ;"
 
