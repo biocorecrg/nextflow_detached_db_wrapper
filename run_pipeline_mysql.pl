@@ -210,12 +210,14 @@ if ( lc( $config{"dbengine"} ) eq 'mysql' ) {
 
             my $myip=`cat "$mysqllog/DBHOST"`;
             $myip=~s/\s+//g;
+            chomp($myip);
             print "DBHOST: ".$myip."\n";
             my $tmpconf = tmpnam();
 
             &processConfFileDb( $confFile, $myip, $tmpconf );
-           	print( "Run NEXTFLOW\n") ;
+            print( "Run NEXTFLOW\n") ;
             system( "export NXF_VER=$nextflowver; $nextflow run $nfparams -bg $nfscript $resumeStr -c $tmpconf" );
+            
         } else {
 
             while ( ! -f "$mysqllog/DBHOST" ) {
