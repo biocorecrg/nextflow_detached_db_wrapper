@@ -95,6 +95,7 @@ sub processConfFileDb {
 
   close( TMPCONF );
 
+  return 1;
 }
 
 
