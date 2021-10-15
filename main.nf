@@ -57,26 +57,29 @@ process importSchema {
 
 }
 
-process insertAndRetrieve {
-
-  input:
-  path(done)
-
-  output:
-  val(out)
-
-  script:
-  query = "SELECT id from test limit 1"
-  out = channel.sql.fromQuery(query, db: 'dbtest')
-
-}
+// process insertAndRetrieve {
+//
+//   input:
+//   path(done)
+//
+//   output:
+//   val(out)
+//
+//   script:
+//   query = "SELECT id from test limit 1"
+//   out = channel.sql.fromQuery(query, db: 'dbtest')
+//
+// }
 
 // Full Workflow
 workflow {
 
   done = importSchema()
-  out = insertAndRetrieve(done)
-  println(out)
+  if ( done ) {
+    query = "SELECT id from test limit 1"
+    out = channel.sql.fromQuery(query, db: 'dbtest')
+    println(out)
+  }
 }
 
 // On finishing
