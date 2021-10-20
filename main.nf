@@ -45,38 +45,19 @@ if(params.dbengine == "mysql") {
 	mysql = true
 }
 
-process importSchema {
-
-  output:
-  path("done")
-
-  """
-  mysql -u${params.dbuser} -p${params.dbpass} -h${params.dbhost} -P${params.dbport} \
-  ${params.dbname} -e "CREATE DATABASE ${params.dbname}; CREATE TABLE test (id varchar(20)); INSERT INTO test values('myid')" > done
-  """
-
-}
-
-process insertAndRetrieve {
-
-  input:
-  path(done)
-
-  output:
-  val(out)
-
-  script:
-  query = "SELECT id from test limit 1"
-  out = channel.sql.fromQuery(query, db: 'dbtest')
-
-}
-
 // Full Workflow
 workflow {
 
-  done = importSchema()
-  out = insertAndRetrieve(done)
-  println(out)
+  out = channel
+    .of('Hello','world')
+    .map( it -> tuple(it) )
+    .sqlInsert( into: 'test', columns: 'id', db: 'dbtest',
+    setup: 'CREATE TABLE test (id varchar(20))' )
+
+
+   // query_select = "SELECT id FROM test"
+   // channel.sql.fromQuery(query_select, db: 'dbtest').view()
+
 }
 
 // On finishing
