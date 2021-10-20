@@ -14,3 +14,10 @@ Only running MySQL instance. Useful for checking existing contents.
 ```
 nohup perl run_pipeline_mysql.pl -conf params.config -mysqlonly -extra "-j y -l virtual_free=4G,h_rt=372800 -N MYSQL_container -m be -cwd -V -q myqueue"  &> log.mysqlonly &
 ```
+
+## Requirements
+
+* [Nextflow](https://www.nextflow.io/)
+* [Singularity](https://singularity.hpcng.org/)
+* Perl (e. g., with [Perlbrew](https://perlbrew.pl/))
+  * Install Config::Simple module: ```cpanm Config::Simple```
